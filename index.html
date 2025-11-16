@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <title>Терапевтична приказка</title>
+  <style>
+    body {
+      font-family: "Roboto", sans-serif;
+      background: #f4f4f9;
+      margin: 0;
+      overflow-x: hidden!important;
+    }
+    h1, h2, h3, h4, h5, h6, p {
+      font-family: "Roboto", sans-serif;
+    }
+    h2 {
+      font-family: "Great Vibes", cursive;
+      text-align: center;
+      font-size: 80px;
+      margin: 30px auto 0;
+      font-weight: 400;
+    }
+    h2 + p {
+      margin-top: 0;
+      font-size: 20px;
+    }
+    h3 {
+      font-size: 2.2em;
+      margin-bottom:  10px;
+    }
+    .container {
+            max-width: 700px;
+            margin: auto;
+            margin-bottom: 50px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        textarea {
+            max-width: 95%;
+            width: 100%;
+            height: 100px;
+            resize: none;
+            font-size: 16px;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            outline: none;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            color: white;
+            transition: background-color 0.2s ease;
+        }
+        button:disabled {
+          opacity: .3;
+        }
+        button:disabled:hover {
+          opacity: .3;
+          cursor: not-allowed;
+        }
+        #submitBtn {
+            background-color: #007bff;
+        }
+        #submitBtn:hover {
+            background-color: #0056b3;
+        }
+        #downloadBtn {
+            background-color: #28a745;
+        }
+        #downloadBtn:hover {
+            background-color: #1e7e34;
+        }
+        #clearBtn {
+            background-color: #dc3545;
+        }
+        #clearBtn:hover {
+            background-color: #b02a37;
+        }
+        .output p {
+            background: #eef6ff;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+        .output p[contenteditable="true"] {
+            background: #fff4d6;
+        }
+        small {
+            display: block;
+            margin-top: 10px;
+            color: gray;
+        }
+    .heading {
+      text-align: center;
+      color: #1e3a8a;
+    }
+    .slide {
+      display: none;
+      /*width: 100vw;
+      position: absolute; 
+      top: 0;
+      left: 0; */
+      padding: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .content {
+      display: flex;
+      gap: 30px;
+      max-width: 1000px;
+      background: white;
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+    .info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+    }
+    .info img {
+      max-width: 100%;
+      border-radius: 12px;
+      margin-bottom: 15px;
+    }
+    .info p,
+    .info ul {
+      font-size: 1.1em;
+      margin: 10px 0;
+    }
+    .deck {
+      flex: 1;
+      text-align: center;
+    }
+    .deck h3 {
+      margin-bottom: 10px;
+      font-size: 1.2em;
+      color: #333;
+    }
+    .card {
+      margin: 10px 0;
+      padding: 10px;
+      min-height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card img {
+      max-width: 100%;
+      max-height: 50vh;
+      border-radius: 8px;
+    }
+    .card img {
+      transition: opacity 0.5s ease;
+      opacity: 1;
+    }
+
+    .card img.fading {
+      opacity: 0;
+    }
+
+    button {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 8px;
+      background: #4c73afed;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin: 5px;
+      font-size: 18px;
+      opacity: 1;
+      transition: opacity .3s;
+    }
+    button:hover {
+      opacity: 0.7;
+    }
+    .nav {
+      /* position: absolute;*/
+      width: 100%;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .content:before {
+      content: '';
+      position: absolute;
+      width: 40vw;
+      height: 40vw;
+      rotate: -110deg;
+      transform: translate(-50%, -50%);
+      top: -70%;
+      left: 10%;
+      opacity: .5;
+      border-radius: 30%;
+    }
+    .content.blue {
+      background-color: #e4f9fa;
+      color: #294864;
+    }
+    .content.blue:before {
+      background-color: #70cbd0;
+    }
+    .content.blue p {
+      color: #294864;
+    }
+    .content.blue button {
+      background: #70cbd0;
+    }
+    .content.green {
+      background-color: #ebfeeb;
+      color: #084b22;
+    }
+    .content.green:before {
+      background-color: #6aa66a;
+    }
+    .content.green p {
+      color: #084b22;
+    }
+    .content.green button {
+      background: #6aa66a;
+    }
+    .content.pink {
+      background-color: #ffedf1;
+      color: #731d36;
+    }
+    .content.pink:before {
+      background-color: #efb9c7;
+    }
+    .content.pink p {
+      color: #731d36;
+    }
+    .content.pink button {
+      background: #efb9c7;
+    }
+    .content.orange {
+      background-color: #ffeccc;
+      color: #9b4f01;
+    }
+    .content.orange:before {
+      background-color: #fdb954;
+    }
+    .content.orange p {
+      color: #9b4f01;
+    }
+    .content.orange button {
+      background: #fdb954;
+    }
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.6s ease;
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      position: relative;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="heading">
+    <h2>Пътят на героя</h2>
+    <p>терапевтична приказка</p>
+  </div>
+
+  <!-- Слайдове 1–12 -->
+  <div class="slide" id="slide1">
+    <div class="content blue">
+      <div class="info">
+        <h3>Обикновеният свят</h3>
+        <!-- <img src="images/1.png"> -->
+        <p>Запознаваме се с нашия герой, който обикновено живее в свят, смятан за обикновен и незабележителен от неговите обитатели. Виждаме протагониста в неговото ежедневие, но той често е аутсайдер или се възприема като различен от останалите в обществото. Понякога героят притежава някаква особеност, способност или характерна черта, която го кара да се чувства <strong>не на място</strong>.</p>
+      </div>
+      <div class="deck">
+        <div class="card">
+          <img src="images/1.png"/>
+        </div>
+          <button onclick="drawCard('habitat/', '.jpg', 87, this)">Изтегли карта</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" id="slide2">
+    <div class="content green">
+      <div class="info">
+        <h3>Призивът за приключение</h3>
+        <!-- <img src="images/2.png"> -->
+        <p>За да започне своето пътешествие, героят трябва да бъде призован да напусне обикновения свят и да се откъсне от своето познато обкръжение.</p>
+        <p>Обикновено това се случва чрез <strong>откритие, събитие, проблем</strong> или <strong>опасност</strong>, които го подтикват към действие.</p>
+        <p><strong>Новият свят</strong>, в който героят навлиза, е напълно различен от предишния, а приключението го очаква.</p>
+      </div>
+      <div class="deck">
+        <div class="card">
+          <img src="images/2.png" />
+        </div>
+        <button onclick="drawCard('resilio-b/', '.jpg', 95, this)">Изтегли карта</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" id="slide3">
+    <div class="content pink">
+      <div class="info">
+        <h3>Приемане на призива</h3>
+        <p>Преди да тръгне на своето пътешествие, <strong>героят получава задача или мисия</strong>, която само той може да изпълни.</p> 
+        <p>Той е изправен пред избор – <strong>да приеме или да откаже</strong> това предизвикателство.</p>
+        <p>Тъй като <strong>има причина той да бъде избран</strong>, в крайна сметка <strong>приема</strong> призива и продължава към следващия етап на своето приключение.</p>
+      </div>
+      <div class="deck">
+        <div class="card">
+          <img src="images/3.png" />
+        </div>
+        <button onclick="drawCard('cope/', '.jpg', 88, this)">Изтегли карта</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" id="slide4">
+    <div class="content orange">
+      <div class="info">
+        <h3>Менторът и талисманът</h3>
+        <p>Героят среща <strong>експерт</strong> или <strong>ментор</strong>, който притежава <strong>специални умения, сили или мъдрост</strong>.</p>
+        <p>Този свръхестествен образ често му дава <strong>нещо необходимо</strong>, за да успее в своята мисия. </p>
+        <p>Това може да бъде:</p> 
+        <ul>
+          <li><strong>Магически предмет</strong></li>
+          <li><strong>Обучение</strong> за развитие на дадено умение</li>
+          <li><strong>Съвет</strong> или <strong>прозрение</strong></li>
+        </ul>
+        <p>Талисманът е специален предмет, който <strong>помага на героя</strong> по време на неговото пътуване.</p>
+      </div>
+      <div class="deck">
+        <div class="card">
+          <img src="images/4.png" />
+        </div>
+        <button onclick="drawCard('resilio-a/', '.jpg', 44, this)">Изтегли карта</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" id="slide5">
+    <div class="content blue">
+      <div class="info">
+        <h3>Прекрачване на прага</h3>
+        <p>Героят <strong>напуска обикновения свят</strong> и навлиза в <strong>нова, непозната среда</strong>. Този свят може да бъде изпълнен със:</p> 
+        <ul>
+          <li>Странни същества</li>
+          <li>Свръхестествени явления</li>
+          <li>Зашеметяващи гледки</li>
+          <li>Постоянни опасности</li>
+        </ul>
+        <p><strong>Новият свят има свои собствени правила</strong>, a героят <strong>е необходимо да се адаптира</strong>, за да оцелее или да бъде приет.</p>
+      </div>
+      <div class="deck">
+        <div class="card">
+          <img src="images/5.png" />
+        </div>
+        <button onclick="drawCard('mythos/', '.jpg', 54, this)">Изтегли карта</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" id="slide6">
+    <div class="content green">
+      <div class="info">
+        <h3>Изпитания, съюзници и врагове</h3>
+        <p>Героят се изправя пред поредица от <strong>препятствия</strong> или <strong>предизвикателства</strong>, които е необходимо да преодолее.</p> 
+        <p>Това го прави <strong>по-силен и по-мъдър</strong>, подготвяйки го за най-голямото изпитание. По пътя той може да срещне: </p>
+        <ul>
+          <li>
+            <strong>Врагове</strong>, които му се противопоставят
+          </li>
+          
+          <li>
+            <strong>Съюзници</strong>, които стават негови спътници и му помагат в мисията.
+          </li>
+        </ul>
+      </div>
+      <div class="deck">
+        <div class="card">
+          <img src="images/6.png" />
+        </div>
+        <button onclick="drawCard('resilio-b/', '.jpg', 95, this)">Изтегли карта</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" id="slide7">
+    <div class="content pink">
+      <div class="info">
+        <h3>Приближаване</h3>
+        <p>Това е <strong>подготовката за финалната битка</strong>, известна още като <strong>върховното изпитание</strong>. На този етап <strong>героят се сблъсква с нещо</strong>, което го <strong>мотивира</strong> или го <strong>подготвя</strong> да изпълни последната задача. Това е решаващ момент, в който героят <strong>събира сили</strong> за предстоящото голямо предизвикателство.</p>
+      </div>
+      <div class="deck">
+        <div class="card">
+          <img src="images/7.png" />
+        </div>
+        <button onclick="drawCard(7, this)">Изтегли карта</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" id="slide8">
+    <div class="content orange">
+      <div class="info">
+        <h3>Върховното изпитание</h3>
+        <p>След като е <strong>натрупал умения и знания</strong> по време на своето пътешествие, героят се изправя пред <strong>най-голямото препятствие</strong>.</p>
+        <p>По време на тази решаваща битка той обикновено губи нещо важно, като:</p>
+        <ul>
+          <li>Предмет</li>
+          <li>Ментор</li>
+          <li>Самата битка</li>
+          <li>Живот</li>
+        </ul>
+        <p>Героят <strong>успява</strong>, напрежението спада, но <strong>пътешествието му все още не е напълно завършено</strong>.</p>
+      </div>
+      <div class="deck">
+        <div class="card">
+          <img src="images/8.png" />
+        </div>
+        <button onclick="drawCard('inuk/', '.png', 84, this)">Изтегли карта</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" id="slide9">
+    <div class="content blue">
+      <div class="info">
+        <h3>Наградата</h3>
+        <p>Обикновено <strong>героят получава награда</strong> за своята <strong>сила</strong> и <strong>издръжливост</strong> по време на върховното изпитание.</p>
+        <p>Тази награда може да бъде:</p>
+        <ul>
+          <li>Съкровище</li>
+          <li>Любов</li>
+          <li>Ценна информация</li>
+          <li>Уважение или възхищение</li>
+        </ul>
+      </div>
+      <div class="deck">
+        <div class="card">
+          <img src="images/9.png" />
+        </div>
+        <button onclick="drawCard('oh/', '.jpg', 86, this)">Изтегли карта</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" id="slide10">
+    <div class="content green">
+      <div class="info">
+        <h3>Пътят обратно</h3>
+        <p>Героят решава, че е време <strong>да се върне у дома в обикновения свят</strong>.</p>
+        <p>Той осъзнава, че е постигнал <strong>велик подвиг</strong>, но проблемите може още <strong>да не са напълно приключили</strong>.</p>
+        <p>Все още остават <strong>някои препятствия, които трябва да бъдат преодолени</strong>.</p>
+      </div>
+      <div class="deck">
+        <div class="card">
+          <img src="images/10.png" />
+        </div>
+        <button onclick="drawCard('mythos/', '.jpg', 54, this)">Изтегли карта</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" id="slide11">
+    <div class="content pink">
+      <div class="info">
+        <h3>Израстване<br/>Възкресение</h3>
+        <p>Героят <strong>научава важни уроци</strong> чрез своя опит и вече <strong>може да използва придобитата мъдрост и сила</strong> в своя полза.</p>
+        <p>Той сега <strong>се изправя</strong> срещу това или този, който <strong>държи върховната власт в живота му</strong>, в последно изпитание, което ще <strong>докаже доколко е израснал като герой</strong>.</p>
+      </div>
+      <div class="deck">
+        <div class="card">
+          <img src="images/11.png" />
+        </div>
+        <button onclick="drawCard('cope/', '.jpg', 88, this)">Изтегли карта</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" id="slide12">
+    <div class="content orange">
+      <div class="info">
+        <h3>Завръщането</h3>
+        <p>Героят <strong>постига победа</strong>, която променя живота му. </p>
+        <p>Често той се завръща с <strong>предмет или способност</strong>, които му позволяват:</p>
+        <ul>
+          <li>Да спаси своя свят;</li>
+          <li>Да се впише и да бъде приет от обществото.</li>
+        </ul>
+        <p>Героят <strong>доказва своята стойност</strong> и става <strong>легенда</strong>. Накрая <strong>намира своето място в обикновения свят</strong>.</p>
+      </div>
+      <div class="deck">
+        <div class="card">
+          <img src="images/12.png" />
+        </div>
+        <button onclick="drawCard('habitat/', '.jpg', 87, this)">Изтегли карта</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav"> <button onclick="prevSlide()">Назад</button> <button onclick="nextSlide()">Напред</button> </div>
+
+  <!-- Текстово поле за въвеждане -->
+  <div class="container">
+        <!-- <h2>Добави, редактирай, изтегли и изчисти текст</h2> -->
+
+        <textarea id="textInput" placeholder="Въведи текст тук..."></textarea>
+        <div class="button-group">
+            <button id="submitBtn">Добави</button>
+            <button id="downloadBtn">Изтегли файл</button>
+            <button id="clearBtn">🗑️ Изчисти всичко</button>
+        </div>
+
+        <small>💡 Натисни върху вече добавен текст, за да го редактираш директно. Данните се запазват автоматично.</small>
+
+        <div class="output" id="output"></div>
+    </div>
+
+    <script>
+
+  // 🔐 Настрой своята парола тук:
+  const correctPassword = "nnk;"; // <-- смени с твоята парола
+
+  // Създаваме overlay за въвеждане на парола
+  const overlay = document.createElement("div");
+  overlay.style.position = "fixed";
+  overlay.style.top = "0";
+  overlay.style.left = "0";
+  overlay.style.width = "100vw";
+  overlay.style.height = "100vh";
+  overlay.style.background = "rgba(0,0,0,0.9)";
+  overlay.style.display = "flex";
+  overlay.style.flexDirection = "column";
+  overlay.style.alignItems = "center";
+  overlay.style.justifyContent = "center";
+  overlay.style.zIndex = "9999";
+  overlay.innerHTML = `
+    <div style="background:white; padding:30px; border-radius:12px; text-align:center; max-width:300px; width:80%;">
+      <h3>🔒 Въведи парола</h3>
+      <input id="passwordInput" type="password" placeholder="Парола" style="padding:10px; width:90%; font-size:16px; margin-top:10px; border-radius:8px; border:1px solid #ccc;">
+      <button id="passwordBtn" style="margin-top:15px; padding:10px 20px; border:none; border-radius:8px; background:#4c73af; color:white; font-size:16px; cursor:pointer;">Вход</button>
+      <p id="errorMsg" style="color:red; margin-top:10px; display:none;">Грешна парола!</p>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+
+  // Скриваме съдържанието, докато няма достъп
+  document.body.style.overflow = "hidden";
+
+  document.getElementById("passwordBtn").addEventListener("click", () => {
+    const input = document.getElementById("passwordInput").value.trim();
+    if (input === correctPassword) {
+      overlay.style.display = "none";
+      document.body.style.overflow = "auto";
+    } else {
+      const msg = document.getElementById("errorMsg");
+      msg.style.display = "block";
+      setTimeout(() => (msg.style.display = "none"), 2000);
+      document.getElementById("passwordInput").value = "";
+    }
+  });
+
+  // Позволяваме натискане на Enter
+  document.getElementById("passwordInput").addEventListener("keypress", (e) => {
+    if (e.key === "Enter") document.getElementById("passwordBtn").click();
+  });
+
+
+    function drawCard(type, format, deckSize, button) {
+    const folderName = type;
+    const formatName = format;
+    const randomIndex = Math.floor(Math.random() * deckSize) + 1;
+    const newSrc = folderName + randomIndex + formatName;
+
+    const img = button.closest(".deck").querySelector(".card img");
+
+    // Ако има вече изображение, правим плавен преход
+    if (img) {
+      img.classList.add("fading");
+
+      // Изчакваме леко избледняване преди да сменим картинката
+      setTimeout(() => {
+        img.src = newSrc;
+      }, 200);
+
+      // След като новото изображение се зареди, показваме го плавно
+      img.onload = () => {
+        img.classList.remove("fading");
+      };
+    } else {
+      // Ако няма изображение (рядък случай)
+      const newImg = document.createElement("img");
+      newImg.src = newSrc;
+      newImg.alt = "Карта";
+      button.closest(".deck").querySelector(".card").appendChild(newImg);
+    }
+  }
+
+
+    let currentSlide = 1;
+    const totalSlides = 12;
+
+    function showSlide(n) {
+      const slides = document.querySelectorAll(".slide");
+      slides.forEach((slide, index) => {
+        if (index === n - 1) {
+          slide.classList.add("active");
+        } else {
+          slide.classList.remove("active");
+        }
+      });
+
+      // Активиране / деактивиране на бутоните
+      document.querySelector('.nav button:first-child').disabled = (currentSlide === 1);
+      document.querySelector('.nav button:last-child').disabled = (currentSlide === totalSlides);
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides) {
+        currentSlide++;
+        showSlide(currentSlide);
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) {
+        currentSlide--;
+        showSlide(currentSlide);
+      }
+    }
+
+    showSlide(currentSlide);
+
+
+
+
+        const textInput = document.getElementById('textInput');
+        const output = document.getElementById('output');
+        const submitBtn = document.getElementById('submitBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const clearBtn = document.getElementById('clearBtn');
+
+        // 🔹 Зареждане на текст от localStorage при стартиране
+        window.addEventListener('load', () => {
+            const savedText = localStorage.getItem('savedParagraphs');
+            if (savedText) {
+                const paragraphs = JSON.parse(savedText);
+                paragraphs.forEach(text => createParagraph(text));
+            }
+        });
+
+        // 🔹 Добавяне на нов абзац
+        submitBtn.addEventListener('click', () => {
+            const text = textInput.value.trim();
+            if (text === "") return;
+            createParagraph(text);
+            textInput.value = "";
+            saveParagraphs();
+        });
+
+        // 🔹 Функция за създаване на абзац
+        function createParagraph(text) {
+            const paragraph = document.createElement('p');
+            paragraph.textContent = text;
+            paragraph.setAttribute('contenteditable', 'false');
+
+            // Клик за редакция
+            paragraph.addEventListener('click', () => {
+                if (paragraph.getAttribute('contenteditable') === 'false') {
+                    paragraph.setAttribute('contenteditable', 'true');
+                    paragraph.focus();
+                }
+            });
+
+            // Изключване на редакция при излизане от фокуса + запазване
+            paragraph.addEventListener('blur', () => {
+                paragraph.setAttribute('contenteditable', 'false');
+                saveParagraphs();
+            });
+
+            output.appendChild(paragraph);
+        }
+
+        // 🔹 Запазване на всички абзаци в localStorage
+        function saveParagraphs() {
+            const paragraphs = Array.from(output.querySelectorAll('p')).map(p => p.textContent);
+            localStorage.setItem('savedParagraphs', JSON.stringify(paragraphs));
+        }
+
+        // 🔹 Изтегляне на текста като файл
+        downloadBtn.addEventListener('click', () => {
+            const paragraphs = output.querySelectorAll('p');
+            if (paragraphs.length === 0) {
+                alert("Няма добавен текст за изтегляне!");
+                return;
+            }
+
+            let textContent = "";
+            paragraphs.forEach(p => {
+                textContent += p.textContent + "\n\n";
+            });
+
+            const blob = new Blob([textContent], { type: "text/plain" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "tekst.txt";
+            link.click();
+            URL.revokeObjectURL(link.href);
+        });
+
+        // 🔹 Изчистване на всички абзаци и localStorage
+        clearBtn.addEventListener('click', () => {
+            if (confirm("Сигурен ли си, че искаш да изтриеш целия текст?")) {
+                output.innerHTML = "";
+                localStorage.removeItem('savedParagraphs');
+            }
+        });
+    </script>
+
+</body>
+</html>
